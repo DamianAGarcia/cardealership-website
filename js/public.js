@@ -46,7 +46,7 @@ function cardHTML(car){
           <span>${car.fuel_type || 'Gas'}</span>
           ${car.condition_note ? `<span>·</span><span>${car.condition_note}</span>` : ''}
         </div>
-        <button class="btn-card" onclick="location.href='tel:+15550192834'">Text about this car</button>
+        <button class="btn-card" onclick="location.href='tel:+12813880775'">Text about this car</button>
       </div>
     </div>`;
 }

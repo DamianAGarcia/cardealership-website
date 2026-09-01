@@ -8,6 +8,12 @@ A two-page site:
 No build tools, no server to run — it's plain HTML/CSS/JS that talks directly to
 [Supabase](https://supabase.com) (free tier) for the database, photo storage, and login.
 
+> **Note:** "Route 12 Auto Sales" and the address/phone/email in this README are just
+> placeholder example values from when this template was first put together — the live
+> site itself uses the real dealership's details. If you ever reuse this codebase for
+> another business, see "Updating the dealership name, address, and phone number" below
+> for exactly where to swap those placeholders out.
+
 ## 1. Create a Supabase project
 
 1. Go to [supabase.com](https://supabase.com) and create a free account, then a new project.
