@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff login — Route 12 Auto Sales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-brand">
+      <div class="mark">12</div>
+      <span>Route 12 Auto Sales</span>
+    </a>
+    <button id="logout-btn" class="btn-logout" style="display:none">Log out</button>
+  </nav>
+
+  <!-- ---------- Login ---------- -->
+  <div id="login-view" class="login-wrap">
+    <div class="login-card">
+      <h1>Staff login</h1>
+      <p>Sign in to add or remove cars from the lot.</p>
+      <div id="login-msg" class="msg msg-error" style="display:none"></div>
+      <form id="login-form">
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-submit">Log in</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ---------- Dashboard ---------- -->
+  <div id="dashboard-view" class="admin-shell" style="display:none">
+    <div class="admin-grid">
+
+      <div class="panel">
+        <h2>Add a car</h2>
+        <div id="car-msg" class="msg" style="display:none"></div>
+        <form id="car-form">
+
+          <div class="field">
+            <label>Photos</label>
+            <div class="photo-drop" id="photo-drop">
+              Tap to choose photos, or drag them here
+              <input type="file" id="photo-input" accept="image/*" multiple>
+            </div>
+            <div class="photo-previews" id="photo-previews"></div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="field-year">Year</label>
+              <input type="number" id="field-year" min="1980" max="2030" required>
+            </div>
+            <div class="field">
+              <label for="field-price">Price ($)</label>
+              <input type="number" id="field-price" min="0" step="1" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="field-make">Make</label>
+              <input type="text" id="field-make" placeholder="Honda" required>
+            </div>
+            <div class="field">
+              <label for="field-model">Model</label>
+              <input type="text" id="field-model" placeholder="Accord" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="field-trim">Trim (optional)</label>
+              <input type="text" id="field-trim" placeholder="LX">
+            </div>
+            <div class="field">
+              <label for="field-mileage">Mileage</label>
+              <input type="number" id="field-mileage" min="0" required>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="field-body">Body type</label>
+              <select id="field-body" required>
+                <option value="sedan">Sedan</option>
+                <option value="suv">SUV</option>
+                <option value="truck">Truck</option>
+                <option value="coupe">Coupe</option>
+                <option value="wagon">Wagon</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="field-transmission">Transmission</label>
+              <select id="field-transmission">
+                <option value="Automatic">Automatic</option>
+                <option value="Manual">Manual</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="field-fuel">Fuel type</label>
+              <select id="field-fuel">
+                <option value="Gas">Gas</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Electric">Electric</option>
+                <option value="Diesel">Diesel</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="field-condition">Condition note (optional)</label>
+              <input type="text" id="field-condition" placeholder="1 owner, clean title">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="field-description">Description (optional)</label>
+            <textarea id="field-description" placeholder="Anything a buyer should know"></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submit-btn">Add to the lot</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h2>On the lot — <span id="listings-count">0 vehicles</span></h2>
+        <div id="listings-list" class="admin-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  supabaseClient.auth.onAuthStateChange((event) => {
+    document.getElementById('logout-btn').style.display = event === 'SIGNED_IN' ? '' : 'none';
+  });
+</script>
+</body>
+</html>
