@@ -66,9 +66,9 @@ Any static hosting works. Two easy free options:
 - **GitHub Pages**: push this folder to a GitHub repo, then in the repo's Settings > Pages,
   enable Pages for the main branch.
 
-Either way, once it's live, share the `/admin.html` link privately with staff — it's
-linked from the public site's footer too ("Staff login"), but only people with a login
-can actually do anything there.
+Either way, once it's live, share the `/admin.html` link privately with staff. It's
+not linked anywhere on the public site — only people who have the direct link and a
+login can get to it.
 
 ## Updating the dealership name, address, and phone number
 

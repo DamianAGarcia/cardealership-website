@@ -46,7 +46,7 @@ function cardHTML(car){
           <span>${car.fuel_type || 'Gas'}</span>
           ${car.condition_note ? `<span>·</span><span>${car.condition_note}</span>` : ''}
         </div>
-        <button class="btn-card" onclick="location.href='tel:+12813880775'">Text about this car</button>
+        <button class="btn-card" onclick="location.href='tel:+12813880775'">Call about this car</button>
       </div>
     </div>`;
 }
@@ -96,9 +96,10 @@ async function loadListings(){
     .order('created_at', { ascending: false });
 
   if (error){
+    console.error('Failed to load inventory:', error);
     grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
       <h3>Couldn't load inventory</h3>
-      <p>${error.message}</p>
+      <p>Something went wrong loading our cars. Please refresh the page, or give us a call at (281) 388-0775 and we'll help you out.</p>
     </div>`;
     return;
   }

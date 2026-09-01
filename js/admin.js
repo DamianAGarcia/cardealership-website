@@ -14,7 +14,7 @@ const listingsList = document.getElementById('listings-list');
 const listingsCount = document.getElementById('listings-count');
 
 let selectedFiles = [];
-const HOME_PAGE = 'index.html';
+let listingsById = {};
 
 /* ---------- Auth gating ---------- */
 
@@ -52,7 +52,7 @@ loginForm.addEventListener('submit', async (e) => {
     return;
   }
 
-  window.location.assign(HOME_PAGE);
+  showDashboard();
 });
 
 logoutBtn.addEventListener('click', async () => {
@@ -80,10 +80,26 @@ function addFiles(fileList){
 
 function renderPreviews(){
   photoPreviews.innerHTML = '';
-  selectedFiles.forEach((file) => {
+  selectedFiles.forEach((file, index) => {
+    const item = document.createElement('div');
+    item.className = 'photo-preview-item';
+
     const img = document.createElement('img');
     img.src = URL.createObjectURL(file);
-    photoPreviews.appendChild(img);
+    item.appendChild(img);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'photo-remove';
+    removeBtn.setAttribute('aria-label', 'Remove photo');
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', () => {
+      selectedFiles.splice(index, 1);
+      renderPreviews();
+    });
+    item.appendChild(removeBtn);
+
+    photoPreviews.appendChild(item);
   });
 }
 
@@ -169,6 +185,8 @@ async function loadListings(){
   }
 
   listingsCount.textContent = data.length + ' vehicle' + (data.length === 1 ? '' : 's');
+  listingsById = {};
+  data.forEach(car => { listingsById[car.id] = car; });
 
   if (data.length === 0){
     listingsList.innerHTML = '<p style="color:var(--gray-500); font-size:14px;">No cars listed yet. Add your first one on the left.</p>';
@@ -209,9 +227,21 @@ function handleRemoveClick(btn){
   deleteListing(btn.dataset.id, btn);
 }
 
+// Storage stores each photo under a path like "<uuid>-filename.jpg" inside
+// the car-photos bucket; the public URL just wraps that path, so this pulls
+// the path back out to pass to storage.remove().
+function urlToStoragePath(url){
+  const marker = '/car-photos/';
+  const idx = url.indexOf(marker);
+  if (idx === -1) return null;
+  return decodeURIComponent(url.slice(idx + marker.length));
+}
+
 async function deleteListing(id, btn){
   btn.disabled = true;
   btn.textContent = 'Removing…';
+
+  const photoUrls = (listingsById[id] && listingsById[id].photo_urls) || [];
 
   const { error } = await supabaseClient.from('listings').delete().eq('id', id);
   if (error){
@@ -220,6 +250,12 @@ async function deleteListing(id, btn){
     btn.classList.remove('confirming');
     btn.textContent = 'Remove';
     return;
+  }
+
+  const paths = photoUrls.map(urlToStoragePath).filter(Boolean);
+  if (paths.length){
+    const { error: storageError } = await supabaseClient.storage.from('car-photos').remove(paths);
+    if (storageError) console.error('Could not remove photos for deleted listing:', storageError);
   }
 
   loadListings();
