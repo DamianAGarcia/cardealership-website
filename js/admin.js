@@ -14,6 +14,7 @@ const listingsList = document.getElementById('listings-list');
 const listingsCount = document.getElementById('listings-count');
 
 let selectedFiles = [];
+const HOME_PAGE = 'index.html';
 
 /* ---------- Auth gating ---------- */
 
@@ -50,7 +51,8 @@ loginForm.addEventListener('submit', async (e) => {
     loginMsg.style.display = '';
     return;
   }
-  showDashboard();
+
+  window.location.assign(HOME_PAGE);
 });
 
 logoutBtn.addEventListener('click', async () => {
